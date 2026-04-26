@@ -26,13 +26,11 @@ Easy Tenancy is designed for small-to-medium property managers to track properti
 
 ## Requirements
 
-- PHP 8.0+ (if this is a PHP/Laravel project) or Node.js 16+ (if Node-based) — adjust according to the codebase.
-- Composer (for PHP) or npm/yarn (for Node)
-- MySQL / MariaDB or PostgreSQL
-- Git
-- npm/yarn (for front-end builds)
-
-> Replace the above with the exact runtime and tooling required by your codebase.
+- PHP 8.1+
+- Composer
+- Node.js 16+
+- npm
+- MySQL / MariaDB or PostgreSQL (or SQLite for development)
 
 ## Quick start — Local development
 
@@ -43,19 +41,15 @@ Easy Tenancy is designed for small-to-medium property managers to track properti
 
 2. Install dependencies
 
-   If PHP/Laravel:
-     composer install
-     npm install
-
-   If Node (express/vue/react):
-     npm install
+   composer install
+   npm install
 
 3. Copy and configure environment file
 
    cp .env.example .env
    Open `.env` and set the database credentials and other required keys (see Environment variables below).
 
-4. Generate app key (Laravel)
+4. Generate app key
 
    php artisan key:generate
 
@@ -63,14 +57,9 @@ Easy Tenancy is designed for small-to-medium property managers to track properti
 
    php artisan migrate --seed
 
-   or if using another framework, run the equivalent migration/seed commands.
-
 6. Start the development server
 
-   PHP/Laravel:
-     php artisan serve
-   Node:
-     npm run dev
+   php artisan serve
 
 7. Open the app in your browser at http://localhost:8000 (or as indicated by the server output).
 
@@ -120,17 +109,13 @@ If you need to reset and re-run migrations:
 
 ## Running tests
 
-Run the test suite with the framework's test runner. For example (Laravel/PHPUnit):
+Run the test suite with PHPUnit:
 
 - ./vendor/bin/phpunit
 
-For Node-based apps, run:
-
-- npm test
-
 ## Building assets
 
-If the project has frontend assets, build them with:
+Build frontend assets with Vite:
 
 - npm run dev (development)
 - npm run build (production)
