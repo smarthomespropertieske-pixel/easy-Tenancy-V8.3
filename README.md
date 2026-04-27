@@ -1,36 +1,27 @@
 # Easy Tenancy (V8.3)
 
-A lightweight property/tenancy management web application — Easy Tenancy V8.3.
+Easy Tenancy is a hybrid repository combining:
 
-This repository contains the application source, configuration and scripts needed to run Easy Tenancy locally and in production.
+- a modern Next.js marketing and demo frontend
+- a nested Laravel backend app in `easyTenancy/`
 
-## Contents
+The root project delivers the SaaS landing page, preview experience, and dashboard demo. The nested Laravel app contains the property management backend for leases, tenants, payments, and maintenance requests.
 
-- Overview and purpose
-- Requirements
-- Quick start (install, configure, run)
-- Environment variables
-- Database migrations & seeding
-- Running tests
-- Contributing
-- Troubleshooting
-- License & maintainers
+## Features
 
----
-
-## Overview
-
-Easy Tenancy is designed for small-to-medium property managers to track properties, tenants, leases, payments and maintenance requests. This README provides the steps needed to get the project running locally and guidance for deploying to production.
-
-(If this repo is a fork or a packaged release, consult the project maintainer for version-specific upgrade/migration notes.)
+- Next.js App Router with TypeScript and Tailwind CSS
+- Landing page, app preview, and dashboard views
+- Nested Laravel backend for tenancy management
+- Demo data structures for properties, tenants, leases, payments and maintenance requests
+- Full-stack starter layout for property management SaaS
 
 ## Requirements
 
-- PHP 8.1+
+- Node.js 18+
+- npm 10+
+- PHP 8.3+
 - Composer
-- Node.js 16+
-- npm
-- MySQL / MariaDB or PostgreSQL (or SQLite for development)
+- Optional: MySQL / MariaDB / PostgreSQL / SQLite for the Laravel backend
 
 ## Quick start — Local development
 
@@ -39,122 +30,75 @@ Easy Tenancy is designed for small-to-medium property managers to track properti
    git clone https://github.com/smarthomespropertieske-pixel/easy-Tenancy-V8.3.git
    cd easy-Tenancy-V8.3
 
-2. Install dependencies
+2. Install root dependencies
 
-   composer install
    npm install
 
-3. Copy and configure environment file
+3. Start the Next.js app
 
-   cp .env.example .env
-   Open `.env` and set the database credentials and other required keys (see Environment variables below).
+   npm run dev
 
-4. Generate app key
+4. Open the frontend
 
-   php artisan key:generate
+   http://localhost:3000
 
-5. Run database migrations and seeders
+## Running the nested Laravel app
 
-   php artisan migrate --seed
+To run the backend app in `easyTenancy/`:
 
-6. Start the development server
+```bash
+cd easyTenancy
+cp .env.example .env
+composer install
+npm install
+php artisan key:generate
+```
 
-   php artisan serve
+Update `easyTenancy/.env` with your database credentials, then:
 
-7. Open the app in your browser at http://localhost:8000 (or as indicated by the server output).
+```bash
+php artisan migrate
+php artisan db:seed
+```
 
-## Environment variables
+Start Laravel:
 
-Add the following keys to your `.env` file (adjust names to match your app):
+```bash
+php artisan serve
+```
 
-- APP_NAME=EasyTenancy
-- APP_ENV=local
-- APP_KEY=
-- APP_URL=http://localhost
+Default URL: `http://127.0.0.1:8000`
 
-Database
-- DB_CONNECTION=mysql
-- DB_HOST=127.0.0.1
-- DB_PORT=3306
-- DB_DATABASE=easy_tenancy
-- DB_USERNAME=root
-- DB_PASSWORD=
+> Note: The nested Laravel app requires PHP 8.3 or newer.
 
-Mail (optional)
-- MAIL_MAILER=smtp
-- MAIL_HOST=smtp.mailtrap.io
-- MAIL_PORT=2525
-- MAIL_USERNAME=
-- MAIL_PASSWORD=
-- MAIL_ENCRYPTION=null
+## Available root pages
 
-Other
-- SANCTUM_STATEFUL_DOMAINS=localhost
-- FRONTEND_URL=http://localhost:3000
+- `/` — Marketing landing page
+- `/preview` — App preview experience
+- `/dashboard` — Demo dashboard with metrics and portfolio cards
 
-> Check your application code for any additional required environment variables and add them here.
+## Build and production
 
-## Database migrations & seeding
+- `npm run build` — Build the Next.js app
+- `npm start` — Start the production server
 
-Run migrations to create the schema and (optionally) seed the database with sample data:
+## Project structure
 
-- php artisan migrate
-- php artisan db:seed
+- `app/` — Next.js routes and pages
+- `components/` — Reusable UI components
+- `easyTenancy/` — Nested Laravel backend app
+- `lib/` — Demo data and content helpers
+- `public/` — Static assets
 
-If you need to reset and re-run migrations:
+## Testing
 
-- php artisan migrate:fresh --seed
+- Next.js: add frontend test tooling as needed
+- Laravel: `cd easyTenancy && ./vendor/bin/phpunit`
 
-(Adjust commands if not using Laravel.)
+## Notes
 
-## Running tests
-
-Run the test suite with PHPUnit:
-
-- ./vendor/bin/phpunit
-
-## Building assets
-
-Build frontend assets with Vite:
-
-- npm run dev (development)
-- npm run build (production)
-
-## Deployment notes
-
-- Ensure environment variables are correctly set on the server.
-- Use a process manager such as Supervisor, systemd, or PM2 for Node apps.
-- Configure HTTPS (Let's Encrypt) and reverse proxy (nginx) in front of the app.
-- Run migrations during deploy and keep backups of production databases before migrations.
-
-## Contributing
-
-Contributions are welcome. Suggested workflow:
-
-1. Fork the repository
-2. Create a topic branch (feature/bugfix)
-3. Commit changes with clear messages
-4. Open a pull request describing the changes and any migration steps
-
-Please include tests for any new behavior and update documentation when relevant.
-
-## Troubleshooting
-
-- Database connection errors: verify DB_HOST, DB_PORT, DB_USERNAME and DB_PASSWORD in `.env`.
-- Missing dependencies: re-run composer install or npm install and check versions.
-- Permission errors: ensure storage and bootstrap/cache (Laravel) are writable by the web server user.
-
-## Maintainers & authors
-
-- Repository: smarthomespropertieske-pixel/easy-Tenancy-V8.3
-- Contributors: see the project's contributors graph on GitHub: https://github.com/smarthomespropertieske-pixel/easy-Tenancy-V8.3/graphs/contributors
+This repository currently provides the frontend SaaS experience and a Laravel scaffold for backend workflows. Extend it by adding authentication, API integration, and tenant persistence.
 
 ## License
 
-Specify the project license (e.g., MIT). If there's a LICENSE file in the repository, link to it here.
-
----
-
-If you'd like, I can:
-- Tailor this README to the exact stack (Laravel/Node/etc.) used in the repo if you point me to the project language/framework files.
-- Add badge images (build, license, coverage) and example configuration files.
+Released under the MIT License.
