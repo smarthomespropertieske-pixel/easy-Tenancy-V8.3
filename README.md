@@ -1,175 +1,103 @@
-# Easy Tenancy (V8.3)
+# Easy Tenancy V8.3
 
-A lightweight property/tenancy management web application — Easy Tenancy V8.3.
+The operating system for modern rental management in Kenya. Track properties, tenants, leases, payments and maintenance — built for M-Pesa rent collection.
 
-This repository contains the application source, configuration and scripts needed to run Easy Tenancy locally and in production.
+## Tech Stack
 
-## Contents
+- **Framework:** Next.js 14 (App Router)
+- **Styling:** Tailwind CSS
+- **Database:** SQLite via Prisma ORM
+- **Auth:** JWT (cookie-based)
+- **Language:** TypeScript
 
-- Overview and purpose
-- Requirements
-- Quick start (install, configure, run)
-- Environment variables
-- Database migrations & seeding
-- Running tests
-- Contributing
-- Troubleshooting
-- License & maintainers
+## Features
 
----
+- **Landing Page** — Premium SaaS-positioned homepage targeting Kenyan landlords and property managers
+- **Authentication** — Register / login with email and password
+- **Dashboard** — Key metrics at a glance (properties, tenants, leases, revenue, maintenance)
+- **Properties** — Full CRUD for managing your property portfolio (residential, commercial, mixed use)
+- **Tenants** — Track tenant details, ID numbers, phone, unit assignments, move-in dates
+- **Leases** — Create and manage lease agreements with rent amounts, deposits, and status tracking
+- **Payments** — Record rent payments with M-Pesa support, bank transfer, cash, and cheque methods
+- **Maintenance** — Log requests with priority levels, assign to properties/tenants, track resolution status
 
-## Overview
+## Quick Start
 
-Easy Tenancy is designed for small-to-medium property managers to track properties, tenants, leases, payments and maintenance requests. This README provides the steps needed to get the project running locally and guidance for deploying to production.
+```bash
+# Install dependencies
+npm install
 
-(If this repo is a fork or a packaged release, consult the project maintainer for version-specific upgrade/migration notes.)
+# Set up environment
+cp .env.example .env
+# Edit .env with your DATABASE_URL (default: file:./dev.db)
 
-## Requirements
+# Run database migrations
+npx prisma migrate dev
 
-- PHP 8.0+ (if this is a PHP/Laravel project) or Node.js 16+ (if Node-based) — adjust according to the codebase.
-- Composer (for PHP) or npm/yarn (for Node)
-- MySQL / MariaDB or PostgreSQL
-- Git
-- npm/yarn (for front-end builds)
+# Start development server
+npm run dev
+```
 
-> Replace the above with the exact runtime and tooling required by your codebase.
+Open [http://localhost:3000](http://localhost:3000) in your browser.
 
-## Quick start — Local development
+## Environment Variables
 
-1. Clone the repository
+Create a `.env` file with:
 
-   git clone https://github.com/smarthomespropertieske-pixel/easy-Tenancy-V8.3.git
-   cd easy-Tenancy-V8.3
+```
+DATABASE_URL="file:./dev.db"
+JWT_SECRET="your-secret-key-change-in-production"
+```
 
-2. Install dependencies
+## Database
 
-   If PHP/Laravel:
-     composer install
-     npm install
+The app uses SQLite by default (zero configuration). To use PostgreSQL or MySQL, update the `datasource` in `prisma/schema.prisma` and the `DATABASE_URL` in `.env`.
 
-   If Node (express/vue/react):
-     npm install
+### Migrations
 
-3. Copy and configure environment file
+```bash
+npx prisma migrate dev          # Apply migrations (development)
+npx prisma migrate deploy       # Apply migrations (production)
+npx prisma studio               # Visual database browser
+```
 
-   cp .env.example .env
-   Open `.env` and set the database credentials and other required keys (see Environment variables below).
+## Project Structure
 
-4. Generate app key (Laravel)
+```
+├── prisma/
+│   ├── schema.prisma           # Database schema
+│   └── migrations/             # Migration files
+├── src/
+│   ├── app/
+│   │   ├── page.tsx            # Landing page
+│   │   ├── login/              # Login page
+│   │   ├── register/           # Registration page
+│   │   ├── dashboard/          # Dashboard & CRUD pages
+│   │   │   ├── properties/
+│   │   │   ├── tenants/
+│   │   │   ├── leases/
+│   │   │   ├── payments/
+│   │   │   └── maintenance/
+│   │   └── api/                # API routes
+│   ├── components/             # Reusable UI components
+│   ├── lib/                    # Utilities (db, auth, formatting)
+│   └── middleware.ts           # Auth middleware
+├── package.json
+├── tailwind.config.ts
+└── tsconfig.json
+```
 
-   php artisan key:generate
+## Building for Production
 
-5. Run database migrations and seeders
-
-   php artisan migrate --seed
-
-   or if using another framework, run the equivalent migration/seed commands.
-
-6. Start the development server
-
-   PHP/Laravel:
-     php artisan serve
-   Node:
-     npm run dev
-
-7. Open the app in your browser at http://localhost:8000 (or as indicated by the server output).
-
-## Environment variables
-
-Add the following keys to your `.env` file (adjust names to match your app):
-
-- APP_NAME=EasyTenancy
-- APP_ENV=local
-- APP_KEY=
-- APP_URL=http://localhost
-
-Database
-- DB_CONNECTION=mysql
-- DB_HOST=127.0.0.1
-- DB_PORT=3306
-- DB_DATABASE=easy_tenancy
-- DB_USERNAME=root
-- DB_PASSWORD=
-
-Mail (optional)
-- MAIL_MAILER=smtp
-- MAIL_HOST=smtp.mailtrap.io
-- MAIL_PORT=2525
-- MAIL_USERNAME=
-- MAIL_PASSWORD=
-- MAIL_ENCRYPTION=null
-
-Other
-- SANCTUM_STATEFUL_DOMAINS=localhost
-- FRONTEND_URL=http://localhost:3000
-
-> Check your application code for any additional required environment variables and add them here.
-
-## Database migrations & seeding
-
-Run migrations to create the schema and (optionally) seed the database with sample data:
-
-- php artisan migrate
-- php artisan db:seed
-
-If you need to reset and re-run migrations:
-
-- php artisan migrate:fresh --seed
-
-(Adjust commands if not using Laravel.)
-
-## Running tests
-
-Run the test suite with the framework's test runner. For example (Laravel/PHPUnit):
-
-- ./vendor/bin/phpunit
-
-For Node-based apps, run:
-
-- npm test
-
-## Building assets
-
-If the project has frontend assets, build them with:
-
-- npm run dev (development)
-- npm run build (production)
-
-## Deployment notes
-
-- Ensure environment variables are correctly set on the server.
-- Use a process manager such as Supervisor, systemd, or PM2 for Node apps.
-- Configure HTTPS (Let's Encrypt) and reverse proxy (nginx) in front of the app.
-- Run migrations during deploy and keep backups of production databases before migrations.
-
-## Contributing
-
-Contributions are welcome. Suggested workflow:
-
-1. Fork the repository
-2. Create a topic branch (feature/bugfix)
-3. Commit changes with clear messages
-4. Open a pull request describing the changes and any migration steps
-
-Please include tests for any new behavior and update documentation when relevant.
-
-## Troubleshooting
-
-- Database connection errors: verify DB_HOST, DB_PORT, DB_USERNAME and DB_PASSWORD in `.env`.
-- Missing dependencies: re-run composer install or npm install and check versions.
-- Permission errors: ensure storage and bootstrap/cache (Laravel) are writable by the web server user.
-
-## Maintainers & authors
-
-- Repository: smarthomespropertieske-pixel/easy-Tenancy-V8.3
-- Contributors: see the project's contributors graph on GitHub: https://github.com/smarthomespropertieske-pixel/easy-Tenancy-V8.3/graphs/contributors
+```bash
+npm run build
+npm start
+```
 
 ## License
 
-Specify the project license (e.g., MIT). If there's a LICENSE file in the repository, link to it here.
+MIT
 
 ---
 
-If you'd like, I can:
-- Tailor this README to the exact stack (Laravel/Node/etc.) used in the repo if you point me to the project language/framework files.
-- Add badge images (build, license, coverage) and example configuration files.
+&copy; Smarthomes Consulting Group Ltd
